@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMP NEGERI 1 SINDANG</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+background:black;
+color:white;
+overflow-x:hidden;
+}
+
+/* PARALLAX */
+.parallax{
+position:fixed;
+width:100%;
+height:100%;
+background:radial-gradient(circle,#200000,#000000);
+z-index:-2;
+}
+
+/* MATRIX */
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* LOGO */
+.logo{
+text-align:center;
+margin-top:20px;
+}
+.logo img{
+width:90px;
+box-shadow:none;
+border-radius:0;
+}
+
+/* JUDUL */
+h1{
+text-align:center;
+margin:15px;
+color:red;
+text-shadow:0 0 10px red,0 0 20px red;
+}
+
+/* BUTTON MUSIK */
+.music-btn{
+position:fixed;
+top:15px;
+right:15px;
+background:red;
+border:none;
+padding:10px 15px;
+color:white;
+border-radius:20px;
+cursor:pointer;
+z-index:10;
+}
+
+.container{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+padding:25px;
+}
+
+.card{
+background:transparent; /* hilangkan kotak */
+border:none;
+padding:15px;
+text-align:center;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px red;
+}
+
+.card img{
+width:90px;
+height:90px;
+object-fit:cover;
+display:block;
+margin:0 auto 10px;
+
+border-radius:0;   /* ini yang bikin tidak bulat */
+box-shadow:none;
+border:none;
+}
+.card{
+padding:12px;
+}
+
+.card h3{
+font-size:14px;
+margin-top:5px;
+}
+.card a{
+display:inline-block;
+margin-top:8px;
+padding:5px 10px;
+background:red;
+color:white;
+border-radius:15px;
+text-decoration:none;
+}
+.card:hover img{
+transform:scale(1.1);
+box-shadow:0 0 25px red;
+}
+.card{
+animation:float 3s ease-in-out infinite;
+}
+@media(max-width:600px){
+.container{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+@keyframes float{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-5px);}
+}
+
+/* RESPONSIVE */
+@media(max-width:500px){
+h1{font-size:18px;}
+}
+/* TEKS MELAYANG */
+.floating-text{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:-1;
+overflow:hidden;
+}
+
+.float{
+position:absolute;
+color:#00ff88;
+font-size:20px;
+opacity:0.7;
+animation:floatUp linear infinite;
+text-shadow:0 0 10px #00ff88,0 0 20px #00ff88;
+}
+
+@keyframes floatUp{
+0%{
+transform:translateY(100vh);
+opacity:0;
+}
+10%{opacity:1;}
+100%{
+transform:translateY(-10vh);
+opacity:0;
+}
+}
+/* PAPAN JUDUL MODERN */
+.judul{
+display:inline-block;
+margin:20px auto;
+padding:15px 30px;
+text-align:center;
+
+background:linear-gradient(45deg,#ffd700,#ffcc00,#ffaa00);
+color:black;
+font-weight:600;
+font-size:24px;
+border-radius:15px;
+
+box-shadow:
+0 0 10px #ffd700,
+0 0 20px #ffcc00,
+0 0 30px #ffaa00;
+
+text-shadow:0 0 5px rgba(0,0,0,0.5);
+
+position:relative;
+left:50%;
+transform:translateX(-50%);
+}
+
+/* efek glow bergerak */
+.judul::before{
+content:"";
+position:absolute;
+top:0;
+left:-100%;
+width:100%;
+height:100%;
+background:linear-gradient(120deg,transparent,rgba(255,255,255,0.6),transparent);
+animation:shine 3s infinite;
+border-radius:15px;
+}
+
+@keyframes shine{
+0%{left:-100%;}
+100%{left:100%;}
+}
+.judul:hover{
+transform:translateX(-50%) scale(1.05);
+box-shadow:
+0 0 20px #ffd700,
+0 0 40px #ffcc00,
+0 0 60px #ffaa00;
+}
+</style>
+</head>
+
+<body>
+
+<div class="parallax"></div>
+
+<canvas id="matrix"></canvas>
+<canvas id="particle"></canvas>
+<div class="floating-text" id="floatingText"></div>
+<button class="music-btn" onclick="toggleMusic()">🔊 ON</button>
+
+<div class="logo">
+<img src="logo nesasin.png">
+</div>
+
+<h1 class="judul">SMP NEGERI 1 SINDANG</h1>
+
+<div class="container">
+<div class="card"><img src="1.jpg"><h3>VII A</h3><a href="#">Instagram</a></div>
+<div class="card"><img src="delapanb.jpeg"><h3>VII B</h3><a href="https://www.instagram.com/eight_balance8?igsh=enYxZzlqMHVhemh1">Instagram</a></div>
+<div class="card"><img src="3.jpg"><h3>VII C</h3><a href="#">Instagram</a></div>
+<div class="card"><img src="4.jpg"><h3>VII D</h3><a href="#">Instagram</a></div>
+<div class="card"><img src="5.jpg"><h3>VIII A</h3><a href="#">Instagram</a></div>
+<div class="card"><img src="6.jpg"><h3>VIII B</h3><a href="#">Instagram</a></div>
+<div class="card"><img src="7.jpg"><h3>VIII C</h3><a href="#">Instagram</a></div>
+<div class="card"><img src="8.jpg"><h3>VIII D</h3><a href="#">Instagram</a></div>
+</div>
+
+<audio id="musik" loop>
+<source src="musik.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* MATRIX RAIN */
+const mCanvas = document.getElementById("matrix");
+const mCtx = mCanvas.getContext("2d");
+
+mCanvas.width = window.innerWidth;
+mCanvas.height = window.innerHeight;
+
+let letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+letters = letters.split("");
+
+let fontSize = 14;
+let columns = mCanvas.width / fontSize;
+let drops = [];
+
+for(let x=0;x<columns;x++) drops[x]=1;
+
+function drawMatrix(){
+mCtx.fillStyle="rgba(0,0,0,0.05)";
+mCtx.fillRect(0,0,mCanvas.width,mCanvas.height);
+
+mCtx.fillStyle="#ff0000";
+mCtx.font=fontSize+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+let text = letters[Math.floor(Math.random()*letters.length)];
+mCtx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+if(drops[i]*fontSize > mCanvas.height && Math.random()>0.975)
+drops[i]=0;
+
+drops[i]++;
+}
+}
+setInterval(drawMatrix,35);
+
+/* PARTICLE LEDAK */
+const pCanvas = document.getElementById("particle");
+const pCtx = pCanvas.getContext("2d");
+
+pCanvas.width = window.innerWidth;
+pCanvas.height = window.innerHeight;
+
+let particles=[];
+
+function explosion(x,y){
+for(let i=0;i<20;i++){
+particles.push({
+x,y,
+dx:(Math.random()-0.5)*5,
+dy:(Math.random()-0.5)*5,
+life:80
+});
+}
+}
+
+function animate(){
+pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+
+particles.forEach((p,i)=>{
+p.x+=p.dx;
+p.y+=p.dy;
+p.life--;
+
+pCtx.fillStyle="red";
+pCtx.fillRect(p.x,p.y,2,2);
+
+if(p.life<=0) particles.splice(i,1);
+});
+
+requestAnimationFrame(animate);
+}
+
+setInterval(()=>{
+explosion(Math.random()*pCanvas.width,Math.random()*pCanvas.height);
+},500);
+
+animate();
+
+/* PARALLAX GERAK */
+document.addEventListener("mousemove",(e)=>{
+document.querySelector(".parallax").style.transform=
+`translate(${e.clientX*0.01}px,${e.clientY*0.01}px)`;
+});
+
+/* MUSIK */
+let music = document.getElementById("musik");
+let isPlaying = false;
+
+function toggleMusic(){
+if(!isPlaying){
+music.play();
+isPlaying=true;
+document.querySelector(".music-btn").innerText="🔊 OFF";
+}else{
+music.pause();
+isPlaying=false;
+document.querySelector(".music-btn").innerText="🔇 ON";
+}
+}
+/* TEKS KELAS MELAYANG */
+const kelasList = [
+"VII A","VII B","VII C","VII D",
+"VIII A","VIII B","VIII C","VIII D"
+];
+
+const container = document.getElementById("floatingText");
+
+function createFloatingText(){
+let span = document.createElement("span");
+span.className = "float";
+span.innerText = kelasList[Math.floor(Math.random()*kelasList.length)];
+
+span.style.left = Math.random()*100 + "vw";
+span.style.animationDuration = (5 + Math.random()*5) + "s";
+span.style.fontSize = (16 + Math.random()*20) + "px";
+
+container.appendChild(span);
+
+setTimeout(()=>{ span.remove(); },10000);
+}
+
+setInterval(createFloatingText,400);
+</script>
+
+</body>
+</html>
