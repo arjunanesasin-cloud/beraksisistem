@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMP NEGERI 1 SINDANG</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: black;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* OPENING */
+        #opening {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            color: #00ff88;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            font-family: monospace;
+            transition: opacity 0.5s;
+        }
+
+        .terminal {
+            width: 90%;
+            max-width: 500px;
+        }
+
+        #glitch {
+            font-size: 22px;
+            color: #ff0000;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        #glitch::before,
+        #glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            width: 100%;
+        }
+
+        #glitch::before {
+            animation: glitchTop 1s infinite;
+        }
+
+        #glitch::after {
+            animation: glitchBottom 1.2s infinite;
+        }
+
+        @keyframes glitchTop {
+            0% { clip-path: inset(0 0 80% 0); }
+            50% { clip-path: inset(0 0 10% 0); }
+            100% { clip-path: inset(0 0 80% 0); }
+        }
+
+        @keyframes glitchBottom {
+            0% { clip-path: inset(80% 0 0 0); }
+            50% { clip-path: inset(10% 0 0 0); }
+            100% { clip-path: inset(80% 0 0 0); }
+        }
+
+        #typing {
+            color: #ff4444;
+            white-space: pre-line;
+        }
+
+        .loading-box {
+            width: 100%;
+            height: 8px;
+            background: #330000;
+            margin-top: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #loading-bar {
+            width: 0%;
+            height: 100%;
+            background: #ff0000;
+            box-shadow: 0 0 10px #ff0000;
+        }
+
+        /* BACKGROUND */
+        .parallax {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #200000, #000000);
+            z-index: -2;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* UI */
+        .logo {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logo img {
+            width: 70px;
+        }
+
+        .judul {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: black;
+            font-weight: 600;
+            font-size: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #ffaa00;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .music-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: red;
+            border: none;
+            padding: 8px 12px;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .card {
+            text-align: center;
+            padding: 10px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100%;
+            max-width: 110px;
+            height: 110px;
+            object-fit: cover;
+            margin: auto;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .card a {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 6px 12px;
+            background: red;
+            color: white;
+            border-radius: 15px;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        /* FLOAT */
+        .floating-text {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .float {
+            position: absolute;
+            color: #ff0000;
+            opacity: 0.6;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- OPENING -->
+    <div id="opening">
+        <div class="terminal">
+            <h2 id="glitch" data-text="BY TEAM KODING NESASIN">BY TEAM KODING NESASIN</h2>
+            <p id="typing"></p>
+            <div class="loading-box">
+                <div id="loading-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="parallax"></div>
+    <canvas id="matrix"></canvas>
+    <canvas id="particle"></canvas>
+    <div class="floating-text" id="floatingText"></div>
+
+    <button class="music-btn" onclick="toggleMusic()">🔊 ON</button>
+
+    <div class="logo">
+        <img src="logo nesasin.png">
+    </div>
+
+    <h1 class="judul">KARYA DIGITAL SISWA SMP NEGERI 1 SINDANG</h1>
+
+    <div class="container">
+        <div class="card">
+            <img src="tujuha.jpeg">
+            <h3>VII A</h3>
+            <a href="https://www.instagram.com/class_7a_nesasin?igsh=ZXgyenhmZDlrbXE1&utm_source=qr">Instagram</a>
+        </div>
+
+        <div class="card">
+            <img src="tujuhb.jpeg">
+            <h3>VII B</h3>
+            <a href="https://www.instagram.com/nesasin_seventh.be?igsh=MWludDJsYWlqc3E1Yw==">Instagram</a>
+        </div>
+
+        <div class="card">
+            <img src="tujuhc.jpeg">
+            <h3>VII C</h3>
+            <a href="https://www.instagram.com/the7c.dreamteam?igsh=d3U4emU0czVsOXN5">Instagram</a>
+        </div>
+
+        <div class="card">
+            <img src="tujuhd.jpeg">
+            <h3>VII D</h3>
+            <a href="https://www.instagram.com/sevenndee_nesasin?igsh=Z3BpNGpxb3g4cGR0">Instagram</a>
+        </div>
+
+        <div class="card">
+            <img src="delapana.jpeg">
+            <h3>VIII A</h3>
+            <a href="https://www.instagram.com/thewonderclass.eightaa_?igsh=b2xhenRteXQ1MGx4">Instagram</a>
+        </div>
+
+        <div class="card">
+            <img src="delapanb.jpeg">
+            <h3>VIII B</h3>
+            <a href="https://www.instagram.com/eight_balance8?igsh=enYxZzlqMHVhemh1">Instagram</a>
+        </div>
+
+        <div class="card">
+            <img src="delapanc.jpeg">
+            <h3>VIII C</h3>
+            <a href="https://www.instagram.com/eightt_threenesasinn?igsh=ZW1wa3M2bTBqdGV0">Instagram</a>
+        </div>
+
+        <div class="card">
+            <img src="delapand.jpeg">
+            <h3>VIII D</h3>
+            <a href="https://www.instagram.com/eigth_d_nesasin?igsh=MWRkcDI1bHB1M2x6Zw==">Instagram</a>
+        </div>
+    </div>
+
+    <audio id="musik" loop>
+        <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="typingSound">
+        <source src="https://www.soundjay.com/mechanical/keyboard-1.mp3">
+    </audio>
+
+    <script>
+        /* OPENING */
+        const text = [
+            "> Nesasin High system Hacking...",
+            "> Nesasin Initializing system...",
+            "> Loading database...",
+            "> Connecting...",
+            "> Bypassing security...",
+            "> Access granted ✔"
+        ];
+
+        let i = 0, j = 0, currentText = "", progress = 0;
+        const typingEl = document.getElementById("typing");
+        const bar = document.getElementById("loading-bar");
+        const sound = document.getElementById("typingSound");
+
+        function typeEffect() {
+            if (i < text.length) {
+                if (j < text[i].length) {
+                    currentText += text[i][j];
+                    typingEl.innerText = currentText;
+                    j++;
+
+                    sound.currentTime = 0;
+                    sound.play();
+
+                    progress += 2;
+                    bar.style.width = progress + "%";
+
+                    setTimeout(typeEffect, 30);
+                } else {
+                    currentText += "\n";
+                    i++;
+                    j = 0;
+                    setTimeout(typeEffect, 300);
+                }
+            } else {
+                bar.style.width = "100%";
+                setTimeout(() => {
+                    document.getElementById("opening").style.opacity = "0";
+                    setTimeout(() => {
+                        document.getElementById("opening").style.display = "none";
+                    }, 500);
+                }, 1200);
+            }
+        }
+
+        typeEffect();
+
+        /* MATRIX */
+        const mCanvas = document.getElementById("matrix");
+        const mCtx = mCanvas.getContext("2d");
+        let fontSize = 14, columns, drops;
+
+        function resizeCanvas() {
+            mCanvas.width = window.innerWidth;
+            mCanvas.height = window.innerHeight;
+            columns = mCanvas.width / fontSize;
+            drops = Array(Math.floor(columns)).fill(1);
+        }
+
+        resizeCanvas();
+
+        let letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+        function drawMatrix() {
+            mCtx.fillStyle = "rgba(0,0,0,0.07)";
+            mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
+            mCtx.fillStyle = "#ff0000";
+            mCtx.font = fontSize + "px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                let text = letters[Math.floor(Math.random() * letters.length)];
+                mCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > mCanvas.height && Math.random() > 0.98) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 60);
+
+        /* MUSIC */
+        let music = document.getElementById("musik");
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (!isPlaying) {
+                music.play();
+                isPlaying = true;
+                document.querySelector(".music-btn").innerText = "🔇 OFF";
+            } else {
+                music.pause();
+                isPlaying = false;
+                document.querySelector(".music-btn").innerText = "🔊 ON";
+            }
+        }
+
+        /* FLOAT */
+        const kelas = ["VII A", "VII B"];
+        const floatContainer = document.getElementById("floatingText");
+
+        function createFloat() {
+            let span = document.createElement("span");
+            span.className = "float";
+            span.innerText = kelas[Math.floor(Math.random() * kelas.length)];
+            span.style.left = Math.random() * 100 + "vw";
+            span.style.animationDuration = (6 + Math.random() * 4) + "s";
+
+            floatContainer.appendChild(span);
+            setTimeout(() => span.remove(), 10000);
+        }
+
+        setInterval(createFloat, 700);
+
+        window.addEventListener("resize", resizeCanvas);
+    </script>
+
+</body>
+</html>
